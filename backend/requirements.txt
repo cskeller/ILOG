@@ -1,0 +1,15 @@
+Django==4.2.15
+# MySQL drivers - Pin mysqlclient to 1.4.6 for App Service compatibility
+# PyMySQL is alternative/fallback driver via pymysql.install_as_MySQLdb()
+mysqlclient==1.4.6
+PyMySQL==1.1.1
+PyYAML==6.0.1
+djangorestframework
+requests
+django-cors-headers
+python-dateutil
+Pillow
+gunicorn
+python-dotenv
+django-storages
+azure-storage-blob

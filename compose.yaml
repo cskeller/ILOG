@@ -1,0 +1,51 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    working_dir: /jit
+    volumes:
+      - ./backend/jit:/jit
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=jit.settings
+    depends_on:
+      - database
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    develop:
+      watch:
+        - path: ./frontend
+          target: /frontend
+          action: sync
+    networks:
+      - app-network
+
+  database:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: jit_db
+      MYSQL_USER: jituser
+      MYSQL_PASSWORD: jitpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app-network
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
+    driver: bridge
