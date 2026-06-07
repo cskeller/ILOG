@@ -1,0 +1,42 @@
+name: Sync from Azure Repo
+
+on:
+  schedule:
+    # Run every 30 minutes
+    - cron: '*/30 * * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout GitHub repo
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add Azure repo as remote
+        run: |
+          git remote add azure https://${{ secrets.AZURE_PAT }}@dev.azure.com/${{ secrets.AZURE_ORG }}/${{ secrets.AZURE_PROJECT }}/_git/${{ secrets.AZURE_REPO }} || true
+          git remote set-url azure https://${{ secrets.AZURE_PAT }}@dev.azure.com/${{ secrets.AZURE_ORG }}/${{ secrets.AZURE_PROJECT }}/_git/${{ secrets.AZURE_REPO }}
+
+      - name: Fetch from Azure dev branch
+        run: |
+          git fetch azure dev:azure-dev
+
+      - name: Merge Azure changes into GitHub dev
+        run: |
+          git merge azure-dev --allow-unrelated-histories -m "Sync from Azure repo - $(date -u +'%Y-%m-%dT%H:%M:%SZ')" || true
+
+      - name: Push to GitHub dev branch
+        run: |
+          git push origin dev
