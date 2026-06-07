@@ -8,7 +8,7 @@ class Overview(models.Model):
     rank = models.CharField(max_length=20)
     lp = models.IntegerField()
     champion = models.CharField(max_length=20)
-    results = models.CharField(max_length=20)
+    result = models.CharField(max_length=20)
     length = models.CharField(max_length=20)
 
 class Details(models.Model):
