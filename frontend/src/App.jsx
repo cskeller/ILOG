@@ -1225,7 +1225,7 @@ const App = () => {
           <Table>
             <DetailsTableHeader>
               <thead><tr>
-                <th>#</th><th>Date</th><th>Team Kills</th><th>K</th>
+                <th>Match</th><th>Date</th><th>Team Kills</th><th>K</th>
                 <th>D</th><th>A</th><th>CS</th><th>Dmg Dealt</th>
                 <th>Vision</th><th>Kill Part%</th><th>Obj Secured</th>
                 <th>1st Item</th><th>Early Tempo</th>
@@ -1252,7 +1252,7 @@ const App = () => {
           <Table>
             <MetricsTableHeader>
               <thead><tr>
-                <th>#</th><th>Date</th><th>CS/min</th><th>Vis/min</th>
+                <th>Match</th><th>Date</th><th>CS/min</th><th>Vis/min</th>
                 <th>Dmg/min</th><th>Gold Δ@10</th><th>XP Δ@10</th>
                 <th>CS Δ@10</th><th>K+A Δ@10</th>
               </tr></thead>
@@ -1277,7 +1277,7 @@ const App = () => {
           <Table>
             <TempoTableHeader>
               <thead><tr>
-                <th>#</th><th>Date</th><th>Gold@10</th><th>Enemy Gold@10</th>
+                <th>Match</th><th>Date</th><th>Gold@10</th><th>Enemy Gold@10</th>
                 <th>EXP@10</th><th>Enemy EXP@10</th><th>CS@10</th>
                 <th>Enemy CS@10</th><th>K+A@10</th><th>Enemy K+A@10</th>
               </tr></thead>
@@ -1302,7 +1302,7 @@ const App = () => {
           <Table>
             <ReviewTableHeader>
               <thead><tr>
-                <th>#</th><th>Date</th><th>Gameplan</th><th>Major Mistake</th>
+                <th>Match</th><th>Date</th><th>Gameplan</th><th>Major Mistake</th>
                 <th>Mental</th><th>Focus Rating</th><th>Notes</th>
               </tr></thead>
             </ReviewTableHeader>

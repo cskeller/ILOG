@@ -2,14 +2,14 @@ services:
   backend:
     build:
       context: ./backend
-    working_dir: /jil
+    working_dir: /ilog
     volumes:
-      - ./backend/jil:/jil
+      - ./backend/ilog:/ilog
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
     environment:
-      - DJANGO_SETTINGS_MODULE=jil.settings
+      - DJANGO_SETTINGS_MODULE=ilog.settings
     depends_on:
       - database
     networks:
@@ -33,9 +33,9 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: jil_db
-      MYSQL_USER: jiluser
-      MYSQL_PASSWORD: jilpassword
+      MYSQL_DATABASE: ilog_db
+      MYSQL_USER: iloguser
+      MYSQL_PASSWORD: ilogpassword
     ports:
       - "3306:3306"
     volumes:

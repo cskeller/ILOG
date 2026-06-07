@@ -31,6 +31,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install --no-cache-dir gunicorn
 
 # Copy the whole Django project
-COPY ./jil /app
+COPY ./ilog /app
 
 EXPOSE 8000
