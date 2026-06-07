@@ -12,6 +12,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Configure Git
         run: |
@@ -19,7 +20,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
       
       - name: Add Azure remote
-        run: git remote add azure https://dev.azure.com/{Kumec}/{JIT}/_git/{JIT}
+        run: git remote add azure https://dev.azure.com/Kumec/JIT/_git/JIT
       
       - name: Fetch from Azure
         run: git fetch azure
