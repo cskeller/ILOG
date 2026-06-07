@@ -11,6 +11,20 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
 from pathlib import Path
+import os
+import sys
+from dotenv import load_dotenv
+import pymysql
+
+pymysql.install_as_MySQLdb()
+load_dotenv()
+
+ENV = os.getenv("DJANGO_ENV", "development")
+DB_NAME = os.getenv("DB_NAME", "jit_db")
+DB_USER = os.getenv("DB_USER", "jituser")
+DB_PASSWORD = os.getenv("DB_PASSWORD", "jitpassword")
+DB_HOST = os.getenv("DB_HOST", "database")
+DB_PORT = int(os.getenv("DB_PORT", "3306"))  # Convert to int
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'stats',
 ]
 
 MIDDLEWARE = [
@@ -74,8 +89,12 @@ WSGI_APPLICATION = 'jit.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     }
 }
 
