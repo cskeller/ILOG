@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
 import './App.css'
 
 const DENSITY = {
@@ -1062,6 +1063,7 @@ const App = () => {
   const [review, setReview] = useState({})
   const [densityKey, setDensityKey] = useState('default')
   const [improvementFocus, setImprovementFocus] = useState({})
+  const [existingStats, setExistingStats] = useState({})
 
   const d = DENSITY[densityKey]
 
@@ -1086,8 +1088,18 @@ const App = () => {
   const handleImprovementFocusChange = (e, startdate) => {
     setImprovementFocus(prev => ({ ...prev, [startdate]: e.target.value }))
   }
+  const handleGetExistingStats = () => {
+    axios.get('http://localhost:8000/stats/get_stats/', 
+      { headers: { 'Content-Type': 'application/json' },
+      params: {
+        summoner_name: searchQuery,
+      }
+    }).then(response => {
+      setExistingStats(response.data.match_stats);
+    });
+  }
 
-  useEffect(() => { console.log(review) }, [review])
+  useEffect(() => { console.log('existingStats:', existingStats) }, [existingStats])
 
   return (
     <GlobalLayout>
@@ -1190,7 +1202,7 @@ const App = () => {
               </SearchUnit>
               <Divider />
               <SearchButtonUnit>
-                <SearchButton onClick={() => setSearched(true)}>Search</SearchButton>
+                <SearchButton onClick={() => { setSearched(true); handleGetExistingStats(); }}>Search</SearchButton>
               </SearchButtonUnit>
             </CombinedForm>
           </FormPanel>
@@ -1208,12 +1220,15 @@ const App = () => {
             <TableBodyWrapper>
               <OverviewBodyTable $d={d}>
                 <tbody>
-                  {Array.from({length:21},(_,i)=>i+1).map(n => (
-                    <tr key={n}>
-                      <td>{n}</td><td>2026-05-29</td><td>26.10</td><td>Platinum IV</td>
-                      <td>50</td><td>Taliyah</td><td>W</td><td>30m</td>
-                    </tr>
-                  ))}
+                  {Object.keys(existingStats).map(key => {
+                    const row = existingStats[key];
+                    return (
+                      <tr key={row.match}>
+                        <td>{row.match}</td><td>{row.date}</td><td>{row.patch}</td><td>{row.rank}</td>
+                        <td>{row.lp}</td><td>{row.champion}</td><td>{row.result}</td><td>{row.length}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </OverviewBodyTable>
             </TableBodyWrapper>
@@ -1234,13 +1249,16 @@ const App = () => {
             <TableBodyWrapper>
               <DetailsBodyTable $d={d}>
                 <tbody>
-                  {Array.from({length:21},(_,i)=>i+1).map(n => (
-                    <tr key={n}>
-                      <td>{n}</td><td>2026-05-29</td><td>40</td><td>10</td><td>5</td>
-                      <td>4</td><td>100</td><td>20k</td><td>30</td><td>60%</td>
-                      <td>4</td><td>9:00</td><td>30%</td>
-                    </tr>
-                  ))}
+                  {Object.keys(existingStats).map(key => {
+                    const row = existingStats[key];
+                    return(
+                      <tr key={row.match}>
+                        <td>{row.match}</td><td>{row.date}</td><td>{row.team_kills}</td><td>{row.kills}</td><td>{row.deaths}</td>
+                        <td>{row.assists}</td><td>{row.cs}</td><td>{row.damage_dealt}</td><td>{row.vision_score}</td><td>{(row.kill_participation*100).toFixed(2)}%</td>
+                        <td>{row.obj_secured}</td><td>{row.first_item_timing}</td><td>{row.early_tempo}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </DetailsBodyTable>
             </TableBodyWrapper>
