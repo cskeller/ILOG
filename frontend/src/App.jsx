@@ -1094,7 +1094,7 @@ const App = () => {
       <Container>
         {/* ── HEADER ── */}
         <Header searched={searched}>
-          <HeaderBrand>Jungle Improvement Tracker</HeaderBrand>
+          <HeaderBrand>Jungle Improvement Log</HeaderBrand>
 
           <HeaderCenter>
             <HeaderStat>
@@ -1166,7 +1166,7 @@ const App = () => {
         {/* ── BANNER ── */}
         <Banner searched={searched}>
           <BannerEyebrow>Jungle</BannerEyebrow>
-          <BannerTitle>Improvement Tracker</BannerTitle>
+          <BannerTitle>Improvement Log</BannerTitle>
           <BannerDivider />
           <BannerTagline>
             See exactly where your jungle is winning — and where it isn't. Set an <strong>improvement focus</strong> and track your progress over time with data-driven insights.

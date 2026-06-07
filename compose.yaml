@@ -2,14 +2,14 @@ services:
   backend:
     build:
       context: ./backend
-    working_dir: /jit
+    working_dir: /jil
     volumes:
-      - ./backend/jit:/jit
+      - ./backend/jil:/jil
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
     environment:
-      - DJANGO_SETTINGS_MODULE=jit.settings
+      - DJANGO_SETTINGS_MODULE=jil.settings
     depends_on:
       - database
     networks:
@@ -33,9 +33,9 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: jit_db
-      MYSQL_USER: jituser
-      MYSQL_PASSWORD: jitpassword
+      MYSQL_DATABASE: jil_db
+      MYSQL_USER: jiluser
+      MYSQL_PASSWORD: jilpassword
     ports:
       - "3306:3306"
     volumes:
