@@ -42,6 +42,32 @@ const DENSITY = {
   },
 }
 
+const RANKS = {
+  Iron:        { r: '110, 100, 90'  },
+  Bronze:      { r: '165, 90, 40'   },
+  Silver:      { r: '120, 128, 145' },
+  Gold:        { r: '195, 158, 28'  },
+  Platinum:    { r: '22, 138, 148'  },
+  Emerald:     { r: '44, 155, 60'   },
+  Diamond:     { r: '45, 100, 185'  },
+  Master:      { r: '140, 55, 195'  },
+  Grandmaster: { r: '185, 55, 55'   },
+  Challenger:  { r: '246, 230, 142' },
+}
+
+const RANK_TEXT = {
+  Iron:        'rgb(180, 168, 155)',
+  Bronze:      'rgb(220, 150, 95)',
+  Silver:      'rgb(180, 188, 205)',
+  Gold:        'rgb(230, 195, 80)',
+  Platinum:    'rgb(60, 190, 200)',
+  Emerald:     'rgb(90, 200, 105)',
+  Diamond:     'rgb(100, 155, 230)',
+  Master:      'rgb(190, 110, 240)',
+  Grandmaster: 'rgb(235, 110, 110)',
+  Challenger:  'rgb(246, 230, 142)',
+}
+
 /* ─── Layout constants ───────────────────────────────────────────────────────
    HEADER_H  : height of the sticky header bar
    TABBAR_H  : height of the tab bar below it
@@ -771,6 +797,20 @@ const MatchResult = styled.span`
   }
 `
 
+const Rank = styled.td`
+  ${p => {
+    const entry = Object.entries(RANKS).find(([k]) => p.$rank.includes(k))
+    if (!entry) return ''
+    const { r } = entry[1]
+    return `
+      border-left: 3px solid rgba(${r}, 0.6)!important;
+      background: rgba(${r}, 0.40);
+      color: rgba(${r}, 1);
+      font-weight: 600;
+    `
+  }}
+`
+
 /* ─── DETAILS ────────────────────────────────────────────────────────────── */
 const detailsCols = [
   { w: '5%' }, { w: '9%' }, { w: '9%' }, { w: '5%' }, { w: '6%' },
@@ -1179,7 +1219,7 @@ const App = () => {
             </HeaderStat>
             <HeaderDivider className="hide-narrow" />
             <HeaderStat className="hide-narrow">
-              <HeaderStatVal>Platinum IV</HeaderStatVal>
+              <HeaderStatVal >Platinum IV</HeaderStatVal>
               <HeaderStatLbl>Rank</HeaderStatLbl>
             </HeaderStat>
             <HeaderDivider className="hide-narrow" />
@@ -1281,7 +1321,7 @@ const App = () => {
                 <tbody>
                   {(existingStats ?? []).map(row => (
                     <ResultRow key={row.match} $result={row.result}>
-                      <td>{row.match}</td><td>{row.date}</td><td>{row.patch}</td><td>{row.rank}</td>
+                      <td>{row.match}</td><td>{row.date}</td><td>{row.patch}</td><Rank $rank={row.rank}>{row.rank}</Rank>
                       <td>{row.lp} <LPChange $lpChange={row.lp_change}><strong>{row.lp_change !== null ? `(${row.lp_change})`: '(0)'}</strong></LPChange></td><td>{row.champion}</td><td><MatchResult $d={d} $result={row.result}><strong>{row.result.toUpperCase()}</strong></MatchResult></td><td>{row.length}</td>
                     </ResultRow>
                   ))}
