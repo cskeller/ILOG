@@ -95,7 +95,7 @@ const Header = styled.div`
   z-index: 20;
   overflow: hidden;               /* never let it grow taller */
 
-  ${(p) => p.searched && `
+  ${(p) => p.$searched && `
     opacity: 1;
     pointer-events: auto;
   `}
@@ -205,7 +205,7 @@ const TabBar = styled.nav`
   transition: opacity 0.55s ease 0.1s;
   z-index: 19;
 
-  ${(p) => p.searched && `
+  ${(p) => p.$searched && `
     opacity: 1;
     pointer-events: auto;
   `}
@@ -283,9 +283,9 @@ const DensityBtn = styled.button`
   letter-spacing: 0.06em;
   text-transform: uppercase;
   transition: background 0.2s ease, color 0.2s ease;
-  background: ${(p) => p.active ? 'rgba(248, 149, 56, 0.22)' : 'transparent'};
-  color: ${(p) => p.active ? '#f2c96b' : 'rgba(248, 250, 252, 0.45)'};
-  border: 1px solid ${(p) => p.active ? 'rgba(248, 149, 56, 0.35)' : 'transparent'};
+  background: ${(p) => p.$active ? 'rgba(248, 149, 56, 0.22)' : 'transparent'};
+  color: ${(p) => p.$active ? '#f2c96b' : 'rgba(248, 250, 252, 0.45)'};
+  border: 1px solid ${(p) => p.$active ? 'rgba(248, 149, 56, 0.35)' : 'transparent'};
   white-space: nowrap;
 
   &:hover { color: rgba(248, 250, 252, 0.8); }
@@ -307,7 +307,7 @@ const Banner = styled.section`
   transform: translate(-50%, -50%);
   transition: transform 0.85s ease, opacity 0.45s ease;
 
-  ${(p) => p.searched && `
+  ${(p) => p.$searched && `
     transform: translate(-50%, -120vh);
     opacity: 0;
     pointer-events: none;
@@ -423,9 +423,9 @@ const FormPanel = styled.div`
   justify-content: center;
   align-items: flex-start;
   margin-top: 0.5rem;
-  opacity: ${(p) => (p.visible ? 1 : 0)};
-  transform: translateY(${(p) => (p.visible ? '0' : '20px')});
-  pointer-events: ${(p) => (p.visible ? 'auto' : 'none')};
+  opacity: ${(p) => (p.$visible ? 1 : 0)};
+  transform: translateY(${(p) => (p.$visible ? '0' : '20px')});
+  pointer-events: ${(p) => (p.$visible ? 'auto' : 'none')};
   transition: opacity 0.35s ease, transform 0.35s ease;
 `
 
@@ -441,8 +441,8 @@ const CombinedForm = styled.div`
   align-items: stretch;
   box-shadow: 0 6px 30px rgba(2,6,23,0.45);
   transition: opacity 0.18s ease, transform 0.18s ease;
-  opacity: ${(p) => (p.visible ? 1 : 0)};
-  transform: translateY(${(p) => (p.visible ? '0' : '12px')});
+  opacity: ${(p) => (p.$visible ? 1 : 0)};
+  transform: translateY(${(p) => (p.$visible ? '0' : '12px')});
 
   @media (max-width: 700px) { flex-direction: column; }
 `
@@ -732,7 +732,7 @@ const overviewCols = [
 const Overview = styled.section`
   ${sectionBase}
   transition: transform 0.65s ease, opacity 0.85s ease;
-  ${(p) => slideCSS('Overview', p.active, p.searched)}
+  ${(p) => slideCSS('Overview', p.$active, p.$searched)}
 `
 
 const OverviewTableHeader = styled.table`
@@ -752,6 +752,25 @@ const OverviewBodyTable = styled.table`
   tbody tr:hover { background: rgba(255,255,255,0.04); }
 `
 
+const LPChange = styled.span`
+  display: inline-block;
+  margin-left: 0.35rem;
+  color: ${p => 
+    p.$lpChange > 0 ? 'rgba(114, 255, 86, 0.7)' :
+    p.$lpChange < 0 ? 'rgba(253, 57, 57, 0.7)' :
+    'rgba(138, 138, 138, 0.7)'
+  }
+`
+
+const MatchResult = styled.span`
+  font-size: ${p => p.$d?.fontSize || '0.85rem'};
+  color: ${p => 
+    p.$result === 'Win' ? 'rgba(114, 255, 86, 0.7)' :
+    p.$result === 'Loss' ? 'rgba(253, 57, 57, 0.7)' :
+    'rgba(138, 138, 138, 0.7)'
+  }
+`
+
 /* ─── DETAILS ────────────────────────────────────────────────────────────── */
 const detailsCols = [
   { w: '5%' }, { w: '9%' }, { w: '9%' }, { w: '5%' }, { w: '6%' },
@@ -762,7 +781,7 @@ const detailsCols = [
 const Details = styled.section`
   ${sectionBase}
   transition: transform 0.65s ease, opacity 0.85s ease;
-  ${(p) => slideCSS('Details', p.active, p.searched)}
+  ${(p) => slideCSS('Details', p.$active, p.$searched)}
 `
 
 const DetailsTableHeader = styled.table`
@@ -791,7 +810,7 @@ const metricsCols = [
 const Metrics = styled.section`
   ${sectionBase}
   transition: transform 0.65s ease, opacity 0.85s ease;
-  ${(p) => slideCSS('Metrics', p.active, p.searched)}
+  ${(p) => slideCSS('Metrics', p.$active, p.$searched)}
 `
 
 const MetricsTableHeader = styled.table`
@@ -820,7 +839,7 @@ const tempoCols = [
 const Tempo = styled.section`
   ${sectionBase}
   transition: transform 0.65s ease, opacity 0.85s ease;
-  ${(p) => slideCSS('Tempo', p.active, p.searched)}
+  ${(p) => slideCSS('Tempo', p.$active, p.$searched)}
 `
 
 const TempoTableHeader = styled.table`
@@ -849,7 +868,7 @@ const reviewCols = [
 const Review = styled.section`
   ${sectionBase}
   transition: transform 0.65s ease, opacity 0.85s ease;
-  ${(p) => slideCSS('Review', p.active, p.searched)}
+  ${(p) => slideCSS('Review', p.$active, p.$searched)}
 `
 
 const ReviewTableHeader = styled.table`
@@ -876,7 +895,7 @@ const WeeklySummary = styled.section`
   ${sectionBase}
   justify-content: flex-start;
   transition: transform 0.65s ease, opacity 0.85s ease;
-  ${(p) => slideCSS('Weekly Summary', p.active, p.searched)}
+  ${(p) => slideCSS('Weekly Summary', p.$active, p.$searched)}
 `
 
 const WeeklySummaryTableHeader = styled.table`
@@ -1000,7 +1019,7 @@ const FocusCyclesSection = styled.section`
   ${sectionBase}
   flex-direction: column;
   transition: transform 0.65s ease, opacity 0.85s ease;
-  ${(p) => slideCSS('Focus Cycles', p.active, p.searched)}
+  ${(p) => slideCSS('Focus Cycles', p.$active, p.$searched)}
 `
 
 const FocusCyclesRow = styled.div`
@@ -1086,7 +1105,7 @@ const App = () => {
   const [review, setReview] = useState({})
   const [densityKey, setDensityKey] = useState('default')
   const [improvementFocus, setImprovementFocus] = useState({})
-  const [existingStats, setExistingStats] = useState({})
+  const [existingStats, setExistingStats] = useState([])
 
   const d = DENSITY[densityKey]
 
@@ -1122,13 +1141,30 @@ const App = () => {
     });
   }
 
+  useEffect(() => {
+    if (!existingStats?.length) return;
+
+    const seeded = {};
+    existingStats.forEach((row) => {
+      seeded[row.match] = {
+        'Gameplan Adherence':       row['gameplan_adherence']       ?? '',
+        'Major Mistake':            row['major_mistake']            ?? '',
+        'Mental':                   row['mental']                   ?? '',
+        'Focus Rating':             row['focus_rating']             ?? '',
+        'Notes':                    row['notes']                    ?? '',
+      };
+    });
+
+  setReview(seeded);
+  }, [existingStats]);
+
   useEffect(() => { console.log('existingStats:', existingStats) }, [existingStats])
 
   return (
     <GlobalLayout>
       <Container>
         {/* ── HEADER ── */}
-        <Header searched={searched}>
+        <Header $searched={searched}>
           <HeaderBrand>Jungle Improvement Log</HeaderBrand>
 
           <HeaderCenter>
@@ -1175,14 +1211,14 @@ const App = () => {
           </HeaderCenter>
 
           <DensityToggle>
-            <DensityBtn active={densityKey === 'compact'}     onClick={() => setDensityKey('compact')}>Compact</DensityBtn>
-            <DensityBtn active={densityKey === 'default'}     onClick={() => setDensityKey('default')}>Default</DensityBtn>
-            <DensityBtn active={densityKey === 'comfortable'} onClick={() => setDensityKey('comfortable')}>Cozy</DensityBtn>
+            <DensityBtn $active={densityKey === 'compact'}     onClick={() => setDensityKey('compact')}>Compact</DensityBtn>
+            <DensityBtn $active={densityKey === 'default'}     onClick={() => setDensityKey('default')}>Default</DensityBtn>
+            <DensityBtn $active={densityKey === 'comfortable'} onClick={() => setDensityKey('comfortable')}>Cozy</DensityBtn>
           </DensityToggle>
         </Header>
 
         {/* ── TAB BAR ── */}
-        <TabBar searched={searched}>
+        <TabBar $searched={searched}>
           <TabLinks>
             {TAB_ORDER.map(tab => (
               <a
@@ -1199,7 +1235,7 @@ const App = () => {
         </TabBar>
 
         {/* ── BANNER ── */}
-        <Banner searched={searched}>
+        <Banner $searched={searched}>
           <BannerEyebrow>Jungle</BannerEyebrow>
           <BannerTitle>Improvement Log</BannerTitle>
           <BannerDivider />
@@ -1209,8 +1245,8 @@ const App = () => {
           {!showForm && (
             <ActionButton onClick={() => setShowForm(true)}>Search a summoner</ActionButton>
           )}
-          <FormPanel visible={showForm}>
-            <CombinedForm visible={showForm}>
+          <FormPanel $visible={showForm}>
+            <CombinedForm $visible={showForm}>
               <RegionUnit>
                 <StyledSelect value={selectedRegion} onChange={handleRegionChange} aria-label="Region select">
                   {Object.keys(regionCodes).map(r => <option key={r} value={r}>{r}</option>)}
@@ -1232,7 +1268,7 @@ const App = () => {
         </Banner>
 
         {/* ── OVERVIEW ── */}
-        <Overview searched={searched} active={activeTab}>
+        <Overview $searched={searched} $active={activeTab}>
           <Table>
             <OverviewTableHeader>
               <thead><tr>
@@ -1243,15 +1279,12 @@ const App = () => {
             <TableBodyWrapper>
               <OverviewBodyTable $d={d}>
                 <tbody>
-                  {Object.keys(existingStats).map(key => {
-                    const row = existingStats[key];
-                    return (
-                      <ResultRow key={row.match} $result={row.result}>
-                        <td>{row.match}</td><td>{row.date}</td><td>{row.patch}</td><td>{row.rank}</td>
-                        <td>{row.lp}</td><td>{row.champion}</td><td>{row.result}</td><td>{row.length}</td>
-                      </ResultRow>
-                    );
-                  })}
+                  {(existingStats ?? []).map(row => (
+                    <ResultRow key={row.match} $result={row.result}>
+                      <td>{row.match}</td><td>{row.date}</td><td>{row.patch}</td><td>{row.rank}</td>
+                      <td>{row.lp} <LPChange $lpChange={row.lp_change}><strong>{row.lp_change !== null ? `(${row.lp_change})`: '(0)'}</strong></LPChange></td><td>{row.champion}</td><td><MatchResult $d={d} $result={row.result}><strong>{row.result.toUpperCase()}</strong></MatchResult></td><td>{row.length}</td>
+                    </ResultRow>
+                  ))}
                 </tbody>
               </OverviewBodyTable>
             </TableBodyWrapper>
@@ -1259,7 +1292,7 @@ const App = () => {
         </Overview>
 
         {/* ── DETAILS ── */}
-        <Details searched={searched} active={activeTab}>
+        <Details $searched={searched} $active={activeTab}>
           <Table>
             <DetailsTableHeader>
               <thead><tr>
@@ -1272,16 +1305,13 @@ const App = () => {
             <TableBodyWrapper>
               <DetailsBodyTable $d={d}>
                 <tbody>
-                  {Object.keys(existingStats).map(key => {
-                    const row = existingStats[key];
-                    return(
-                      <ResultRow key={row.match} $result={row.result}>
-                        <td>{row.match}</td><td>{row.date}</td><td>{row.team_kills}</td><td>{row.kills}</td><td>{row.deaths}</td>
-                        <td>{row.assists}</td><td>{row.cs}</td><td>{row.damage_dealt}</td><td>{row.vision_score}</td><td>{(row.kill_participation*100).toFixed(2)}%</td>
-                        <td>{row.obj_secured}</td><td>{row.first_item_timing}</td><td>{row.early_tempo}</td>
-                      </ResultRow>
-                    );
-                  })}
+                  {(existingStats ?? []).map(row => (
+                    <ResultRow key={row.match} $result={row.result}>
+                      <td>{row.match}</td><td>{row.date}</td><td>{row.team_kills}</td><td>{row.kills}</td><td>{row.deaths}</td>
+                      <td>{row.assists}</td><td>{row.cs}</td><td>{row.damage_dealt}</td><td>{row.vision_score}</td><td>{(row.kill_participation*100).toFixed(2)}%</td>
+                      <td>{row.obj_secured}</td><td>{row.first_item_timing}</td><td>{row.early_tempo}</td>
+                    </ResultRow>
+                  ))}
                 </tbody>
               </DetailsBodyTable>
             </TableBodyWrapper>
@@ -1289,7 +1319,7 @@ const App = () => {
         </Details>
 
         {/* ── METRICS ── */}
-        <Metrics searched={searched} active={activeTab}>
+        <Metrics $searched={searched} $active={activeTab}>
           <Table>
             <MetricsTableHeader>
               <thead><tr>
@@ -1301,15 +1331,12 @@ const App = () => {
             <TableBodyWrapper>
               <MetricsBodyTable $d={d}>
                 <tbody>
-                  {Object.keys(existingStats).map(key => {
-                    const row = existingStats[key];
-                    return (
-                      <ResultRow key={row.match} $result={row.result}>
-                        <td>{row.match}</td><td>{row.date}</td><td>{row.cs_per_min}</td><td>{row.vision_per_min}</td><td>{row.damage_per_min}</td>
-                        <td>{row.gold_delta_10}</td><td>{row.xp_delta_10}</td><td>{row.cs_delta_10}</td><td>{row.ka_delta_10}</td>
-                      </ResultRow>
-                    )
-                  })}
+                  {(existingStats ?? []).map(row => (
+                    <ResultRow key={row.match} $result={row.result}>
+                      <td>{row.match}</td><td>{row.date}</td><td>{row.cs_per_min}</td><td>{row.vision_per_min}</td><td>{row.damage_per_min}</td>
+                      <td>{row.gold_delta_10}</td><td>{row.xp_delta_10}</td><td>{row.cs_delta_10}</td><td>{row.ka_delta_10}</td>
+                    </ResultRow>
+                  ))}
                 </tbody>
               </MetricsBodyTable>
             </TableBodyWrapper>
@@ -1317,7 +1344,7 @@ const App = () => {
         </Metrics>
 
         {/* ── TEMPO ── */}
-        <Tempo searched={searched} active={activeTab}>
+        <Tempo $searched={searched} $active={activeTab}>
           <Table>
             <TempoTableHeader>
               <thead><tr>
@@ -1329,11 +1356,11 @@ const App = () => {
             <TableBodyWrapper>
               <TempoBodyTable $d={d}>
                 <tbody>
-                  {Array.from({length:5},(_,i)=>i+1).map(n => (
-                    <tr key={n}>
-                      <td>{n}</td><td>2026-05-29</td><td>4000</td><td>3000</td><td>4000</td>
-                      <td>3000</td><td>80</td><td>70</td><td>3</td><td>3</td>
-                    </tr>
+                  {(existingStats ?? []).map(row => (
+                    <ResultRow key={row.match} $result={row.result}>
+                      <td>{row.match}</td><td>{row.date}</td><td>{row.gold_10}</td><td>{row.enemy_gold_10}</td><td>{row.xp_10}</td>
+                      <td>{row.enemy_xp_10}</td><td>{row.cs_10}</td><td>{row.enemy_cs_10}</td><td>{row.ka_10}</td><td>{row.enemy_ka_10}</td>
+                    </ResultRow>
                   ))}
                 </tbody>
               </TempoBodyTable>
@@ -1342,7 +1369,7 @@ const App = () => {
         </Tempo>
 
         {/* ── REVIEW ── */}
-        <Review searched={searched} active={activeTab}>
+        <Review $searched={searched} $active={activeTab}>
           <Table>
             <ReviewTableHeader>
               <thead><tr>
@@ -1353,18 +1380,18 @@ const App = () => {
             <TableBodyWrapper>
               <ReviewBodyTable $d={d}>
                 <tbody>
-                  {[1,2,3,4,5].map(n => (
-                    <tr key={n}>
-                      <td>{n}</td>
-                      <td>2026-05-29</td>
+                  {(existingStats ?? []).map(row => (
+                    <ResultRow key={row.match} $result={row.result}>
+                      <td>{row.match}</td>
+                      <td>{row.date}</td>
                       <td>
-                        <ReviewSelect $d={d} aria-label="Gameplan Adherence" value={review[n]?.['Gameplan Adherence'] || ''} onChange={(e) => handleReviewChange(e, n, 'Gameplan Adherence')}>
+                        <ReviewSelect $d={d} aria-label="Gameplan Adherence" value={review[row.match]?.['Gameplan Adherence'] || ''} onChange={(e) => handleReviewChange(e, row.match, 'Gameplan Adherence')}>
                           <option value="" disabled hidden>--</option>
                           <option value="Good">Good</option><option value="Okay">Okay</option><option value="Bad">Bad</option>
                         </ReviewSelect>
                       </td>
                       <td>
-                        <ReviewSelect $d={d} aria-label="Major Mistake" value={review[n]?.['Major Mistake'] || ''} onChange={(e) => handleReviewChange(e, n, 'Major Mistake')}>
+                        <ReviewSelect $d={d} aria-label="Major Mistake" value={review[row.match]?.['Major Mistake'] || ''} onChange={(e) => handleReviewChange(e, row.match, 'Major Mistake')}>
                           <option value="" disabled hidden>--</option>
                           <option value="Positioning">Positioning</option>
                           <option value="Late Reset">Late Reset</option>
@@ -1372,13 +1399,13 @@ const App = () => {
                         </ReviewSelect>
                       </td>
                       <td>
-                        <ReviewSelect $d={d} aria-label="Mental" value={review[n]?.['Mental'] || ''} onChange={(e) => handleReviewChange(e, n, 'Mental')}>
+                        <ReviewSelect $d={d} aria-label="Mental" value={review[row.match]?.['Mental'] || ''} onChange={(e) => handleReviewChange(e, row.match, 'Mental')}>
                           <option value="" disabled hidden>--</option>
                           <option value="Calm">Calm</option><option value="Frustrated">Frustrated</option><option value="Tilted">Tilted</option>
                         </ReviewSelect>
                       </td>
                       <td>
-                        <ReviewSelect $d={d} aria-label="Improvement Focus Rating" value={review[n]?.['Improvement Focus Rating'] || ''} onChange={(e) => handleReviewChange(e, n, 'Improvement Focus Rating')}>
+                        <ReviewSelect $d={d} aria-label="Focus Rating" value={review[row.match]?.['Focus Rating'] || ''} onChange={(e) => handleReviewChange(e, row.match, 'Focus Rating')}>
                           <option value="" disabled hidden>--</option>
                           <option value="Good">Good</option><option value="Okay">Okay</option><option value="Bad">Bad</option>
                         </ReviewSelect>
@@ -1386,10 +1413,10 @@ const App = () => {
                       <td>
                         <ReviewNotes $d={d}>
                           <textarea className="form-control" placeholder={notesPlaceholderText} aria-label={notesPlaceholderText}
-                            value={review[n]?.['Notes'] ?? ''} onChange={(e) => handleReviewChange(e, n, 'Notes')} />
+                            value={review[row.match]?.['Notes'] ?? ''} onChange={(e) => handleReviewChange(e, row.match, 'Notes')} />
                         </ReviewNotes>
                       </td>
-                    </tr>
+                    </ResultRow>
                   ))}
                 </tbody>
               </ReviewBodyTable>
@@ -1398,7 +1425,7 @@ const App = () => {
         </Review>
 
         {/* ── WEEKLY SUMMARY ── */}
-        <WeeklySummary searched={searched} active={activeTab}>
+        <WeeklySummary $searched={searched} $active={activeTab}>
           <KpiRow>
             {/* Games Played */}
             <GamesPlayed.Outer value={9} $d={d}>
@@ -1484,7 +1511,7 @@ const App = () => {
         </WeeklySummary>
 
         {/* ── FOCUS CYCLES ── */}
-        <FocusCyclesSection searched={searched} active={activeTab}>
+        <FocusCyclesSection $searched={searched} $active={activeTab}>
           {/* Top row: focus cycles table + (future: notes or summary) */}
           <FocusCyclesRow>
             <FocusCyclesHalf>
