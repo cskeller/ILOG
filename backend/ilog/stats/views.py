@@ -6,15 +6,29 @@ import requests
 import json
 
 # Create your views here.
+def convert_to_hms(match_length):
+    total_seconds = int(match_length)
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    if hours:
+        return f'{hours}:{minutes:02}:{seconds:02}'
+    return f'{minutes}:{seconds:02}'
+
 def get_stats(request):
     total_games_logged = Overview.objects.count() + 1
     match_stats = []
+    prev_lp = None
+    lp_change = None
 
     for match in range(1, total_games_logged):
+        #--------------- LP Change -----------------
+        if prev_lp: lp_change = Overview.objects.get(match=match).lp - prev_lp; prev_lp = Overview.objects.get(match=match).lp
+        else: prev_lp = Overview.objects.get(match=match).lp
+        if lp_change is not None and lp_change > 0: lp_change = f'+{lp_change}'
         #--------------- Early Tempo ---------------
         if float(Details.objects.get(match=match).early_tempo) > 0: early_tempo = f'+{round(float(Details.objects.get(match=match).early_tempo)*100, 2)}%'
         else: early_tempo = f'{round(float(Details.objects.get(match=match).early_tempo)*100, 2)}%'
-        #--------------- Gold Delta 10 ---------------
+        #--------------- Gold Delta 10 -------------
         if int(Metrics.objects.get(match=match).gold_delta_10) > 0: gold_delta_10 = f'+{int(Metrics.objects.get(match=match).gold_delta_10)}'
         else: gold_delta_10 = Metrics.objects.get(match=match).gold_delta_10
         #--------------- XP Delta 10 ---------------
@@ -22,7 +36,7 @@ def get_stats(request):
         else: xp_delta_10 = Metrics.objects.get(match=match).xp_delta_10
         #--------------- CS Delta 10 ---------------
         if int(Metrics.objects.get(match=match).cs_delta_10) > 0: cs_delta_10 = f'+{int(Metrics.objects.get(match=match).cs_delta_10)}'
-        else: cd_delta_10 = Metrics.objects.get(match=match).cs_delta_10
+        else: cs_delta_10 = Metrics.objects.get(match=match).cs_delta_10
         #--------------- KA Delta 10 ---------------
         if int(Metrics.objects.get(match=match).ka_delta_10) > 0: ka_delta_10 = f'+{int(Metrics.objects.get(match=match).ka_delta_10)}'
         else: ka_delta_10 = Metrics.objects.get(match=match).ka_delta_10
@@ -33,9 +47,10 @@ def get_stats(request):
             'patch': Overview.objects.get(match=match).patch,
             'rank': Overview.objects.get(match=match).rank,
             'lp': Overview.objects.get(match=match).lp,
+            'lp_change': lp_change,
             'champion': Overview.objects.get(match=match).champion,
             'result': Overview.objects.get(match=match).result,
-            'length': Overview.objects.get(match=match).length,
+            'length': convert_to_hms(Overview.objects.get(match=match).length),
             'team_kills': Details.objects.get(match=match).team_kills,
             'kills': Details.objects.get(match=match).kills,
             'deaths': Details.objects.get(match=match).deaths,
@@ -57,6 +72,7 @@ def get_stats(request):
             'gold_10': Tempo.objects.get(match=match).gold_10,
             'enemy_gold_10': Tempo.objects.get(match=match).enemy_gold_10,
             'xp_10': Tempo.objects.get(match=match).xp_10,
+            'enemy_xp_10': Tempo.objects.get(match=match).enemy_xp_10,
             'cs_10': Tempo.objects.get(match=match).cs_10,
             'enemy_cs_10': Tempo.objects.get(match=match).enemy_cs_10,
             'ka_10': Tempo.objects.get(match=match).ka_10,
