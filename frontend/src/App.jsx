@@ -652,6 +652,29 @@ const sharedBodyTd = (d) => `
   transition: padding 0.25s ease, font-size 0.25s ease;
 `
 
+const ResultRow = styled.tr`
+  border-radius: 10px;
+  td:first-child {
+    border-left: 3px solid ${p => 
+      p.$result === 'Win' ? 'rgba(20, 180, 90, 0.6)' :
+      p.$result === 'Loss' ? 'rgba(200, 50, 50, 0.6)' :
+      'transparent'
+    };
+  }
+  background: ${(p) =>
+    p.$result === 'Win'  ? 'rgba(20, 120, 70, 0.18)'  :
+    p.$result === 'Loss' ? 'rgba(140, 40, 40, 0.18)'  :
+    'transparent'
+  };
+  &:hover {
+    background: ${(p) =>
+      p.$result === 'Win'  ? 'rgba(20, 120, 70, 0.23)'  :
+      p.$result === 'Loss' ? 'rgba(140, 40, 40, 0.23)'  :
+      'rgba(255,255,255,0.04)'
+    } !important;
+  }
+`
+
 /* ─── TAB SECTION BASE ────────────────────────────────────────────────────
    All sections share the same base positioning.
    top is driven by --section-top so it adapts if the chrome heights change.
@@ -1223,10 +1246,10 @@ const App = () => {
                   {Object.keys(existingStats).map(key => {
                     const row = existingStats[key];
                     return (
-                      <tr key={row.match}>
+                      <ResultRow key={row.match} $result={row.result}>
                         <td>{row.match}</td><td>{row.date}</td><td>{row.patch}</td><td>{row.rank}</td>
                         <td>{row.lp}</td><td>{row.champion}</td><td>{row.result}</td><td>{row.length}</td>
-                      </tr>
+                      </ResultRow>
                     );
                   })}
                 </tbody>
@@ -1252,11 +1275,11 @@ const App = () => {
                   {Object.keys(existingStats).map(key => {
                     const row = existingStats[key];
                     return(
-                      <tr key={row.match}>
+                      <ResultRow key={row.match} $result={row.result}>
                         <td>{row.match}</td><td>{row.date}</td><td>{row.team_kills}</td><td>{row.kills}</td><td>{row.deaths}</td>
                         <td>{row.assists}</td><td>{row.cs}</td><td>{row.damage_dealt}</td><td>{row.vision_score}</td><td>{(row.kill_participation*100).toFixed(2)}%</td>
                         <td>{row.obj_secured}</td><td>{row.first_item_timing}</td><td>{row.early_tempo}</td>
-                      </tr>
+                      </ResultRow>
                     );
                   })}
                 </tbody>
@@ -1278,12 +1301,15 @@ const App = () => {
             <TableBodyWrapper>
               <MetricsBodyTable $d={d}>
                 <tbody>
-                  {Array.from({length:21},(_,i)=>i+1).map(n => (
-                    <tr key={n}>
-                      <td>{n}</td><td>2026-05-29</td><td>8</td><td>10</td><td>1000</td>
-                      <td>+500</td><td>+100</td><td>+20</td><td>+3</td>
-                    </tr>
-                  ))}
+                  {Object.keys(existingStats).map(key => {
+                    const row = existingStats[key];
+                    return (
+                      <ResultRow key={row.match} $result={row.result}>
+                        <td>{row.match}</td><td>{row.date}</td><td>{row.cs_per_min}</td><td>{row.vision_per_min}</td><td>{row.damage_per_min}</td>
+                        <td>{row.gold_delta_10}</td><td>{row.xp_delta_10}</td><td>{row.cs_delta_10}</td><td>{row.ka_delta_10}</td>
+                      </ResultRow>
+                    )
+                  })}
                 </tbody>
               </MetricsBodyTable>
             </TableBodyWrapper>
@@ -1320,7 +1346,7 @@ const App = () => {
           <Table>
             <ReviewTableHeader>
               <thead><tr>
-                <th>Match</th><th>Date</th><th>Gameplan</th><th>Major Mistake</th>
+                <th>Match</th><th>Date</th><th>Gameplan Adherence</th><th>Major Mistake</th>
                 <th>Mental</th><th>Focus Rating</th><th>Notes</th>
               </tr></thead>
             </ReviewTableHeader>
