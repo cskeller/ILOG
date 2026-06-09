@@ -43,29 +43,16 @@ const DENSITY = {
 }
 
 const RANKS = {
-  Iron:        { r: '110, 100, 90'  },
-  Bronze:      { r: '165, 90, 40'   },
-  Silver:      { r: '120, 128, 145' },
-  Gold:        { r: '195, 158, 28'  },
-  Platinum:    { r: '22, 138, 148'  },
-  Emerald:     { r: '44, 155, 60'   },
-  Diamond:     { r: '45, 100, 185'  },
-  Master:      { r: '140, 55, 195'  },
-  Grandmaster: { r: '185, 55, 55'   },
-  Challenger:  { r: '246, 230, 142' },
-}
-
-const RANK_TEXT = {
-  Iron:        'rgb(180, 168, 155)',
-  Bronze:      'rgb(220, 150, 95)',
-  Silver:      'rgb(180, 188, 205)',
-  Gold:        'rgb(230, 195, 80)',
-  Platinum:    'rgb(60, 190, 200)',
-  Emerald:     'rgb(90, 200, 105)',
-  Diamond:     'rgb(100, 155, 230)',
-  Master:      'rgb(190, 110, 240)',
-  Grandmaster: 'rgb(235, 110, 110)',
-  Challenger:  'rgb(246, 230, 142)',
+  Iron:        { r: '97, 102, 106' , rt: '148, 137, 125' },
+  Bronze:      { r: '165, 90, 40'  , rt: '220, 150, 95'  },
+  Silver:      { r: '120, 128, 145', rt: '180, 188, 205' },
+  Gold:        { r: '195, 158, 28' , rt: '230, 195, 80'  },
+  Platinum:    { r: '22, 138, 148' , rt: '60, 190, 200'  },
+  Emerald:     { r: '44, 155, 60'  , rt: '90, 200, 105'  },
+  Diamond:     { r: '45, 100, 185' , rt: '100, 155, 230' },
+  Master:      { r: '140, 55, 195' , rt: '190, 110, 240' },
+  Grandmaster: { r: '185, 55, 55'  , rt: '235, 110, 110' },
+  Challenger:  { r: '246, 230, 142', rt: '246, 230, 142' },
 }
 
 /* ─── Layout constants ───────────────────────────────────────────────────────
@@ -802,13 +789,14 @@ const Rank = styled.td`
     const entry = Object.entries(RANKS).find(([k]) => p.$rank.includes(k))
     if (!entry) return ''
     const { r } = entry[1]
+    const { rt } = entry[1]
     return `
       border-left: 3px solid rgba(${r}, 0.6)!important;
       background: rgba(${r}, 0.40);
-      color: rgba(${r}, 1);
+      color: rgba(${rt}, 1);
       font-weight: 600;
     `
-  }}
+  }};
 `
 
 /* ─── DETAILS ────────────────────────────────────────────────────────────── */
